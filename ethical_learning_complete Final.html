@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interprofessional Ethical Practice - Interactive Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 0.95em;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .progress-info {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            background: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            min-height: 600px;
+            max-height: 700px;
+            overflow-y: auto;
+            padding: 30px;
+            scroll-behavior: smooth;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .intro-screen {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .intro-screen p, .intro-screen ul {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .intro-screen ul {
+            margin-left: 30px;
+        }
+
+        .ai-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .ai-notice strong {
+            color: #856404;
+        }
+
+        .key-concepts {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .key-concepts h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .concept-item {
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .concept-item strong {
+            color: #333;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        /* Chat Interface Styles */
+        .chat-container {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: slideIn 0.4s ease;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.narrator {
+            text-align: center;
+        }
+
+        .message.narrator .bubble {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196f3;
+            display: inline-block;
+            max-width: 85%;
+            margin: 0 auto;
+        }
+
+        .message.character-left .bubble {
+            background: #f5f5f5;
+            border-radius: 20px 20px 20px 5px;
+            max-width: 75%;
+        }
+
+        .message.character-right .bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px 20px 5px 20px;
+            max-width: 75%;
+            margin-left: auto;
+        }
+
+        .message.character-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .message.character-right {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .character-avatar {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .bubble {
+            padding: 15px 20px;
+            border-radius: 15px;
+            line-height: 1.6;
+        }
+
+        .character-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .message.narrator .character-name {
+            color: #1976d2;
+        }
+
+        .message.character-left .character-name {
+            color: #555;
+        }
+
+        .message.character-right .character-name {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .bubble-text {
+            font-size: 1.05em;
+        }
+
+        .question-prompt {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #ff9800;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: 600;
+            color: #e65100;
+            animation: slideIn 0.4s ease;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .answer-option {
+            background: white;
+            border: 3px solid #e0e0e0;
+            padding: 18px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: slideIn 0.4s ease;
+            text-align: center;
+        }
+
+        .answer-option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .answer-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f3f4ff 0%, #e8eaff 100%);
+        }
+
+        .answer-label {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .feedback-section {
+            margin-top: 25px;
+        }
+
+        .feedback-bubble {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            animation: slideIn 0.4s ease;
+        }
+
+        .feedback-bubble.incorrect {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+
+        .feedback-bubble.incorrect .feedback-title {
+            color: #e65100;
+        }
+
+        .feedback-text {
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .reflection-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px dashed #d0d0d0;
+        }
+
+        .reflection-section label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .reflection-section textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1em;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .reflection-section textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .button-secondary {
+            background: #6c757d;
+        }
+
+        .button-secondary:hover {
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-score {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .results-summary {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+
+            .content {
+                padding: 20px;
+                max-height: 600px;
+            }
+
+            .message.character-left .bubble,
+            .message.character-right .bubble {
+                max-width: 85%;
+            }
+
+            .character-avatar {
+                font-size: 35px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Interprofessional Ethical Practice</h1>
+            <p>Interactive Learning Journey</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-info" id="progress-info">Ready to begin</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Intro Screen -->
+            <div id="intro-screen" class="intro-screen">
+                <h2>Welcome to Your Learning Journey! 👋</h2>
+                
+                <div class="ai-notice">
+                    <strong>📱 Note:</strong> These are AI-generated cases designed to simulate real-world ethical challenges that healthcare professionals encounter in practice.
+                </div>
+
+                <p>You're about to experience complex ethical situations through interactive stories. Through these narratives, you'll learn to distinguish between three critical types of ethical challenges.</p>
+
+                <div class="key-concepts">
+                    <h3>🎯 What You'll Learn:</h3>
+                    
+                    <div class="concept-item">
+                        <strong>Ethical Uncertainty</strong><br>
+                        <span style="color: #666;">When you're unsure which ethical principle applies or what the right action should be.</span>
+                    </div>
+                    
+                    <div class="concept-item">
+                        <strong>Ethical Dilemma</strong><br>
+                        <span style="color: #666;">When you must choose between two or more conflicting ethical principles, each with valid justification.</span>
+                    </div>
+                    
+                    <div class="concept-item">
+                        <strong>Ethical Distress</strong><br>
+                        <span style="color: #666;">When you know the right thing to do but external constraints prevent you from acting on it.</span>
+                    </div>
+                </div>
+
+                <p><strong>What makes this different?</strong> Instead of dry case studies, you'll experience these situations through interactive conversations with physiotherapists, occupational therapists, speech-language pathologists, and audiologists as they navigate real clinical challenges.</p>
+
+                <p>Take your time with each scenario. Think critically. There's more nuance here than you might expect! 🤔</p>
+
+                <div style="text-align: center;">
+                    <button class="button" onclick="startLearning()">Begin Your Journey 🚀</button>
+                </div>
+            </div>
+
+            <!-- Chat Screen -->
+            <div id="chat-screen" class="chat-container hidden"></div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="results-screen hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // All 20 narrative cases
+        const narrativeCases = [
+            // CASE 1 - Easy - Pain Management Uncertainty
+            {
+                id: 1,
+                difficulty: "Easy",
+                profession: "Physiotherapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Marcus works at a community rehabilitation center, treating patients recovering from various orthopedic surgeries." },
+                    { type: "character", name: "Marcus", emoji: "👨‍⚕️", side: "left", text: "Mrs. Thompson, you're making good progress! Your range of motion is improving nicely." },
+                    { type: "character", name: "Mrs. Thompson's daughter", emoji: "👩", side: "right", text: "That's great! We keep meaning to ask you—when should Mom take her pain medication? Before therapy? After? We're not sure what's best." },
+                    { type: "character", name: "Marcus", emoji: "👨‍⚕️", side: "left", text: "Hmm... I want to help manage her pain effectively, but I'm also worried about dependency risks. I'm not quite sure which approach I should be recommending here." },
+                    { type: "narrator", name: "Narrator", text: "Marcus has been asked about pain medication timing frequently by families lately." }
+                ],
+                question: "What type of ethical challenge is Marcus experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Excellent! You've correctly identified this as ethical uncertainty.",
+                        exploration: "Marcus isn't facing a choice between two clear principles (which would be a dilemma), and he's not being prevented from acting (which would be distress). Instead, he's genuinely unsure about what ethical principle should guide him. The values involved—pain management versus dependency prevention—aren't yet clearly defined in his mind as conflicting principles. He needs more information or reflection to clarify the situation.",
+                        consideration: "You might have been tempted to call this a dilemma because there are two concerns (pain vs. dependency). But notice: Marcus hasn't yet identified these as specific ethical principles in conflict. He's at an earlier stage—still figuring out the ethical landscape. That confusion is the hallmark of uncertainty."
+                    },
+                    incorrect: {
+                        initial: "Let's think through this together. I can see why you chose that answer!",
+                        guidance: "Consider what Marcus is experiencing: He's not being blocked by external forces (which would be distress), and he hasn't yet identified a clear conflict between two ethical principles (which would be a dilemma). Instead, Marcus is genuinely confused about what ethical principle should guide his practice.",
+                        hint: "The key phrase is 'I'm not quite sure which approach I should be recommending.' He's still trying to figure out the ethical framework that applies. This confusion about what the right approach should be is characteristic of ethical uncertainty.",
+                        resolution: "This is ethical uncertainty. Marcus needs more information or reflection to clarify which ethical principles apply to pain medication discussions. Once he has that clarity, he might face a dilemma—but right now, he's in the uncertain phase."
+                    }
+                },
+                reflectionPrompt: "What resources or consultations might help Marcus gain clarity about his role in pain management discussions?"
+            },
+            
+            // CASE 2 - Easy - Administrative Pressure (Distress)
+            {
+                id: 2,
+                difficulty: "Easy",
+                profession: "Speech-Language Pathology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Sarah has been working in hospital settings for three years. She's currently treating Mr. Chen, a stroke patient with significant dysphagia." },
+                    { type: "character", name: "Sarah", emoji: "👩‍⚕️", side: "left", text: "Mr. Chen needs at least two more weeks of intensive therapy to be safe with oral intake. The progress is there, but it's going to take time." },
+                    { type: "narrator", name: "Narrator", text: "An email arrives from hospital administration." },
+                    { type: "character", name: "Hospital Administrator", emoji: "💼", side: "right", text: "Reminder: Due to efficiency targets, limit dysphagia assessments to 15 minutes. Patients should be discharged within 7 days when insurance doesn't cover extended stay." },
+                    { type: "character", name: "Sarah", emoji: "👩‍⚕️", side: "left", text: "I know exactly what Mr. Chen needs—30-45 minute sessions for proper assessment and therapy. But I'm being told to cut corners and discharge him early. This is so frustrating." }
+                ],
+                question: "What type of ethical challenge is Sarah experiencing?",
+                correctAnswer: "distress",
+                feedback: {
+                    correct: {
+                        initial: "Spot on! This is a clear case of ethical distress.",
+                        exploration: "Sarah knows exactly what she should do (provide 30-45 minute sessions for proper dysphagia assessment and treatment). She's not confused about the right course of action, and she's not choosing between two valid principles. Instead, external forces—administrative pressure and insurance limitations—are preventing her from acting on her professional knowledge.",
+                        consideration: "The frustration Sarah feels is characteristic of ethical distress. She's experiencing the powerlessness that comes from knowing the right path but being unable to follow it due to institutional barriers."
+                    },
+                    incorrect: {
+                        initial: "I can see why you might think that, but let's look more closely at Sarah's situation.",
+                        guidance: "Notice that Sarah has absolute clarity about what needs to be done. She's not confused (so it's not uncertainty), and she's not choosing between two conflicting but valid principles (so it's not a dilemma). Instead, she explicitly knows the right course of action.",
+                        hint: "The key is in Sarah's statement: 'I know exactly what Mr. Chen needs.' She has professional knowledge of best practice. The problem? External constraints—administrative policies and insurance denials—are preventing her from acting on that knowledge.",
+                        resolution: "This is ethical distress. Sarah is experiencing the frustration of knowing what's right but being blocked by institutional barriers. This sense of powerlessness, despite having clear knowledge, is the defining feature of ethical distress."
+                    }
+                },
+                reflectionPrompt: "What advocacy strategies could Sarah use to challenge policies that contradict evidence-based practice?"
+            },
+
+            // CASE 3 - Easy - Budget Constraints (Distress)
+            {
+                id: 3,
+                difficulty: "Easy",
+                profession: "Occupational Therapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Alex is an occupational therapist at an elementary school. One of her students, Emma, has been showing remarkable progress with sensory integration therapy." },
+                    { type: "character", name: "Alex", emoji: "👩‍⚕️", side: "left", text: "Emma would really benefit from a therapy swing and weighted compression vest. I've completed the assessment and the research is clear about what would help her succeed." },
+                    { type: "character", name: "School Principal", emoji: "👔", side: "right", text: "Alex, I appreciate your thoroughness, but we have no budget for new equipment this year. You'll need to make do with what we have." },
+                    { type: "character", name: "Alex", emoji: "👩‍⚕️", side: "left", text: "This is heartbreaking. I know what Emma needs, but my hands are tied by budget constraints." }
+                ],
+                question: "What type of ethical challenge is Alex experiencing?",
+                correctAnswer: "distress",
+                feedback: {
+                    correct: {
+                        initial: "Exactly right! Alex is experiencing ethical distress.",
+                        exploration: "Alex has complete clarity about the right course of action (providing sensory integration equipment based on a thorough assessment). The challenge isn't about choosing between principles or figuring out what's right—it's about being prevented from doing what's right by budget limitations.",
+                        consideration: "This type of systemic barrier is a common source of ethical distress in healthcare and education settings. The professional knows what's needed, but institutional constraints create a barrier between knowledge and action."
+                    },
+                    incorrect: {
+                        initial: "Let's explore this scenario more carefully together.",
+                        guidance: "Think about what Alex is experiencing: There's no confusion about values (so it's not uncertainty). There's no choice between two valid but conflicting principles (so it's not a dilemma). Instead, Alex has clear professional knowledge of what Emma needs.",
+                        hint: "Alex states explicitly: 'I know what Emma needs.' The problem isn't about determining the right path—it's about not being able to follow that path because of external barriers (budget constraints).",
+                        resolution: "This is ethical distress. The key indicator is that Alex knows the right intervention but can't provide it due to institutional limitations. That gap between knowledge and ability to act, creating frustration and powerlessness, defines ethical distress."
+                    }
+                },
+                reflectionPrompt: "How might Alex advocate for necessary resources while working within institutional constraints?"
+            },
+
+            // CASE 4 - Easy - Student Uncertainty
+            {
+                id: 4,
+                difficulty: "Easy",
+                profession: "Audiology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Jamie, an audiology student, is gaining experience at a community health fair. The day has been going smoothly until an unexpected question arises." },
+                    { type: "character", name: "Mr. Martinez", emoji: "🧓", side: "right", text: "Young person, do you think I should get hearing aids? I'm on quite a few medications—one for my heart, blood pressure medication, plus I see a cardiologist and neurologist regularly." },
+                    { type: "character", name: "Jamie", emoji: "👨‍⚕️", side: "left", text: "Oh... I'm not sure. Could hearing loss interact with his medications? Should I even be making a recommendation? I don't have much experience with complex medical histories like this." },
+                    { type: "character", name: "Jamie", emoji: "👨‍⚕️", side: "left", text: "I want to help, but I'm honestly questioning which path aligns with best practice here." }
+                ],
+                question: "What type of ethical challenge is Jamie experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Well done! You've identified Jamie's ethical uncertainty.",
+                        exploration: "Jamie is genuinely unsure about the right course of action. They lack sufficient experience with complex medical histories to know whether immediate recommendation, watchful waiting, or specialist referral is most appropriate. They're not facing institutional barriers (distress) or choosing between known conflicting principles (dilemma)—they simply need more information to determine what's ethically appropriate.",
+                        consideration: "Notice the key phrase: 'I'm questioning which path aligns with best practice.' This uncertainty about what the right approach should be, given limited experience, is the hallmark of ethical uncertainty."
+                    },
+                    incorrect: {
+                        initial: "That's a reasonable guess, but let's look at what Jamie is really experiencing.",
+                        guidance: "Consider: Is Jamie being blocked by external forces? No—there are no institutional barriers preventing them from making a recommendation. Is Jamie choosing between two clear ethical principles? Not really—they haven't even identified what principles should guide them yet.",
+                        hint: "Jamie's challenge is more fundamental: They lack the knowledge and experience to know what the right approach should be. Notice phrases like 'I'm not sure,' 'I don't have much experience,' and 'I'm questioning which path aligns with best practice.'",
+                        resolution: "This is ethical uncertainty. Jamie needs more knowledge—possibly through consultation with a supervisor or more experienced audiologist—to gain clarity about what ethical principles should guide practice when patients have complex medical histories."
+                    }
+                },
+                reflectionPrompt: "What steps should healthcare students take when they encounter clinical situations beyond their current knowledge level?"
+            },
+
+            // CASE 5 - Medium - Intensive Therapy Dilemma
+            {
+                id: 5,
+                difficulty: "Medium",
+                profession: "Speech-Language Pathology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Dr. Rachel Kim is working with 5-year-old Aiden, who has a significant language delay. His parents have strong views about treatment intensity." },
+                    { type: "character", name: "Aiden's parents", emoji: "👫", side: "right", text: "Dr. Kim, we want Aiden in therapy five days a week, two hours each day. We've read that intensive therapy can lead to breakthroughs, and we can adjust our schedules to make it work." },
+                    { type: "character", name: "Dr. Kim", emoji: "👩‍⚕️", side: "left", text: "I can see how dedicated you are. Intensive therapy could benefit his language skills—the research does support that for some children..." },
+                    { type: "character", name: "Dr. Kim", emoji: "👩‍⚕️", side: "left", text: "But I'm also concerned. Aiden is showing signs of fatigue already. Ten hours a week would leave almost no time for play or socializing with peers. Those are crucial for his overall development too." },
+                    { type: "narrator", name: "Narrator", text: "Rachel considers the competing considerations before her." }
+                ],
+                question: "What type of ethical challenge is Dr. Kim experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Excellent analysis! This is indeed an ethical dilemma.",
+                        exploration: "Dr. Kim is caught between two legitimate ethical principles: (1) respecting parental autonomy and their right to make treatment decisions, and (2) beneficence/non-maleficence—protecting Aiden from potential harm (burnout, reduced social development, childhood stress). Both principles are valid. Both have ethical justification. There's no clear 'right' answer that satisfies both principles.",
+                        consideration: "This is why it's a dilemma rather than uncertainty or distress. Rachel isn't confused about which principles apply (uncertainty), and she's not being blocked from acting (distress). Instead, she must make a difficult choice between two conflicting but valid ethical principles. Whatever she decides, one principle will be compromised."
+                    },
+                    incorrect: {
+                        initial: "I can see why you chose that, but let's examine the nuances of this situation.",
+                        guidance: "Consider what Dr. Kim is experiencing: She's not confused about which principles apply—she's clearly identified parental autonomy and child welfare. She's also not being prevented from acting by external forces. So what is she facing?",
+                        hint: "Rachel must choose between two conflicting ethical principles, each with valid justification: respecting the parents' right to make decisions for their child (autonomy) versus protecting Aiden from potential harm (beneficence/non-maleficence). Both sides have merit.",
+                        resolution: "This is an ethical dilemma. The defining feature is the conflict between two valid ethical principles. Rachel must weigh the pros and cons of each option, likely negotiate with the family, and make a choice—knowing that whichever path she chooses, one legitimate principle will be compromised. That's what makes it a true dilemma."
+                    }
+                },
+                reflectionPrompt: "How should clinicians approach conversations with families when their treatment preferences conflict with professional judgment about potential harm?"
+            },
+
+            // CASE 6 - Medium - Return to Sport Dilemma
+            {
+                id: 6,
+                difficulty: "Medium",
+                profession: "Physiotherapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Chris is treating Elena, a competitive volleyball player recovering from ACL reconstruction. The playoffs are approaching, and Elena is eager to return." },
+                    { type: "character", name: "Elena", emoji: "🏃", side: "right", text: "Chris, I need to know—can I play in the playoffs? They're in two weeks. My team is counting on me, and my coach says if I miss this, I might lose my starting position." },
+                    { type: "character", name: "Chris", emoji: "👨‍⚕️", side: "left", text: "Your strength numbers are meeting our basic benchmarks, and your range of motion looks good on paper..." },
+                    { type: "character", name: "Chris", emoji: "👨‍⚕️", side: "left", text: "But Elena, your neuromuscular control—the way your body automatically stabilizes during quick movements—it's not where I'd want it to be for competitive volleyball. You meet the technical criteria, but there's something else." },
+                    { type: "character", name: "Elena", emoji: "🏃", side: "right", text: "But you said my strength is good! I can do the movements. This is my career we're talking about. I'm willing to take the risk." },
+                    { type: "narrator", name: "Narrator", text: "Chris weighs the competing considerations." }
+                ],
+                question: "What type of ethical challenge is Chris experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Exactly! You've recognized this ethical dilemma.",
+                        exploration: "Chris is balancing two legitimate ethical principles: (1) respecting Elena's autonomy—her right to make informed decisions about her body and career, especially given that she meets basic return-to-sport criteria, and (2) his professional duty of beneficence and non-maleficence—preventing potential re-injury that could have long-term consequences. Both positions have ethical validity and potential real-world consequences.",
+                        consideration: "What makes this a particularly challenging dilemma is that external pressure (from her coach and team) is involved, but the core ethical conflict exists independently of that pressure. Chris must weigh patient autonomy against professional responsibility, with no perfect solution that satisfies both principles."
+                    },
+                    incorrect: {
+                        initial: "Let's think through Chris's situation more carefully.",
+                        guidance: "Is Chris confused about which principles apply? No—he's clearly identified patient autonomy and professional responsibility for preventing harm. Is he being prevented from acting by external forces? Not really—he has the authority to make the clearance decision. So what is he experiencing?",
+                        hint: "Chris is facing a conflict between two valid ethical principles: Elena's right to make decisions about her career and body (autonomy) versus his professional obligation to prevent potential re-injury (beneficence/non-maleficence). Both returning her to play and delaying her return have legitimate ethical justifications.",
+                        resolution: "This is an ethical dilemma. Chris must make a difficult choice between two conflicting but valid principles. Whatever he decides—clearing her or asking her to wait—one legitimate ethical principle will be compromised. That conflict between valid principles, with no clear 'right' answer, is what defines a true ethical dilemma."
+                    }
+                },
+                reflectionPrompt: "How can healthcare professionals balance patient autonomy with protective responsibility when external pressures influence patient decisions?"
+            },
+
+            // CASE 7 - Medium - Accepting Gifts Uncertainty
+            {
+                id: 7,
+                difficulty: "Medium",
+                profession: "Occupational Therapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Taylor has been working with Mrs. Okonkwo for six months following her stroke. The therapeutic relationship has been positive, and Mrs. Okonkwo has made excellent progress." },
+                    { type: "character", name: "Mrs. Okonkwo", emoji: "🧓", side: "right", text: "Taylor, you've helped me get my life back. I want to give you this—it's a handmade quilt. In my culture, we show gratitude to those who help us heal." },
+                    { type: "narrator", name: "Narrator", text: "The quilt is clearly valuable and represents hours of work." },
+                    { type: "character", name: "Taylor", emoji: "👨‍⚕️", side: "left", text: "Oh... this is beautiful, Mrs. Okonkwo. I'm not sure if I can accept it though. I know there are policies about gifts, but I also don't want to offend her or disrespect her cultural values. What's the right thing to do here?" },
+                    { type: "character", name: "Taylor", emoji: "👨‍⚕️", side: "left", text: "Is there a monetary threshold? Does it matter that it's handmade versus purchased? Would refusing damage our therapeutic relationship?" }
+                ],
+                question: "What type of ethical challenge is Taylor experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Correct! This is ethical uncertainty.",
+                        exploration: "Taylor is genuinely unsure about what the right course of action should be. He hasn't clearly identified conflicting principles (dilemma) and isn't being prevented from acting by external barriers (distress). Instead, he's uncertain about which ethical principles apply to gift-giving, what institutional policies say, and how to balance professional boundaries with cultural sensitivity. He needs more information—likely from professional guidelines and supervision—to determine the appropriate response.",
+                        consideration: "Gift-giving situations often create uncertainty because they involve multiple considerations: professional boundaries, cultural respect, therapeutic relationships, and institutional policies. The confusion about how to weigh these factors and what guidelines apply is characteristic of ethical uncertainty."
+                    },
+                    incorrect: {
+                        initial: "Let's work through this situation together.",
+                        guidance: "Consider what Taylor is facing: Is he being blocked by clear institutional barriers from accepting the gift? Not exactly—he's unsure what the policies even say. Is he choosing between two clear ethical principles? Not really—he hasn't yet identified what framework should guide him.",
+                        hint: "Notice Taylor's questions: 'Is there a monetary threshold? Does it matter that it's handmade? Would refusing damage our relationship?' These are all questions seeking clarity about what ethical principles and professional standards apply to this situation. He needs more information to determine the right course of action.",
+                        resolution: "This is ethical uncertainty. Taylor needs to consult professional guidelines, institutional policies, and possibly his supervisor to gain clarity about how to handle gifts while respecting both professional boundaries and cultural values. Once he has that clarity, he can act appropriately."
+                    }
+                },
+                reflectionPrompt: "What factors should healthcare professionals consider when patients offer gifts, and how can cultural sensitivity be balanced with professional boundaries?"
+            },
+
+            // CASE 8 - Medium - Scope of Practice Boundary
+            {
+                id: 8,
+                difficulty: "Medium",
+                profession: "Speech-Language Pathology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Jordan is relatively new to working with adult clients who have complex trauma histories. One client, Michael, has been making good progress with communication goals." },
+                    { type: "character", name: "Michael", emoji: "🧑", side: "right", text: "Jordan, you're the first person who's really listened to me. I feel safe here. Can I tell you about what happened to me? The things I've never told anyone?" },
+                    { type: "character", name: "Jordan", emoji: "👨‍⚕️", side: "left", text: "Michael is opening up, which is good for our therapeutic relationship. But is this within my scope? Should I be hearing trauma details, or should I refer him to mental health services?" },
+                    { type: "character", name: "Jordan", emoji: "👨‍⚕️", side: "left", text: "If I redirect him, will it damage the trust we've built? But if I continue, am I practicing outside my boundaries? I'm not sure what the right approach is." }
+                ],
+                question: "What type of ethical challenge is Jordan experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Well done! You've identified ethical uncertainty.",
+                        exploration: "Jordan is confused about where professional boundaries lie and unsure which principle should guide practice—maintaining the therapeutic relationship or adhering strictly to scope of practice. He hasn't identified a clear conflict between principles (dilemma) and isn't being blocked from acting (distress). Instead, he needs more information to understand what's ethically appropriate in this boundary situation.",
+                        consideration: "Scope of practice questions often create uncertainty, especially for newer professionals. The confusion about where boundaries lie, how to balance relationship-building with professional limits, and what to do when clients share information that may be outside one's expertise is characteristic of ethical uncertainty."
+                    },
+                    incorrect: {
+                        initial: "Let's examine Jordan's situation more closely.",
+                        guidance: "Is Jordan being prevented from acting by institutional barriers? No. Has he clearly identified two conflicting ethical principles? Not really—he's still figuring out what framework should guide him. His challenge is more fundamental.",
+                        hint: "Jordan's statements reveal his confusion: 'Is this within my scope? Should I be hearing this? Am I practicing outside my boundaries? I'm not sure what the right approach is.' He needs clarity about professional boundaries and scope of practice before he can determine the appropriate action.",
+                        resolution: "This is ethical uncertainty. Jordan needs consultation with more experienced colleagues or his supervisor to gain clarity about how to handle trauma disclosures while maintaining appropriate professional boundaries. This type of uncertainty is common when professionals encounter situations near the edges of their scope."
+                    }
+                },
+                reflectionPrompt: "How can interprofessional collaboration and consultation help navigate situations that may fall near the boundaries of professional scope?"
+            },
+
+            // CASE 9 - Medium - Sales Pressure Distress
+            {
+                id: 9,
+                difficulty: "Medium",
+                profession: "Audiology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Dr. Patel works at a private audiology clinic. Recently, the practice owner has been emphasizing business metrics more heavily." },
+                    { type: "character", name: "Practice Owner", emoji: "💼", side: "right", text: "Dr. Patel, I need you to focus on premium hearing aid packages. We have quarterly quotas to meet. Our investors are expecting growth." },
+                    { type: "narrator", name: "Narrator", text: "Dr. Patel sees many elderly patients on fixed incomes in the clinic." },
+                    { type: "character", name: "Dr. Patel", emoji: "👩‍⚕️", side: "left", text: "Many of my patients would do perfectly fine with mid-range devices. The premium packages create real financial hardship for them. I know what's appropriate for their needs." },
+                    { type: "character", name: "Dr. Patel", emoji: "👩‍⚕️", side: "left", text: "But I'm being pressured to recommend expensive options for business reasons, not clinical ones. This goes against everything I believe about patient-centered care." }
+                ],
+                question: "What type of ethical challenge is Dr. Patel experiencing?",
+                correctAnswer: "distress",
+                feedback: {
+                    correct: {
+                        initial: "Exactly right! This is ethical distress.",
+                        exploration: "Dr. Patel clearly knows what's right (recommending appropriate, affordable devices based on patient needs and assessment) but is unable to act freely on this knowledge due to external pressure (sales quotas and business demands from the employer). She's experiencing frustration from knowing the ethical course of action but facing institutional barriers that push her toward a different path.",
+                        consideration: "This type of ethical distress—where business interests conflict with patient-centered care—is increasingly common in healthcare settings. The professional knows what's right, but financial pressures create a barrier between knowledge and ethical action."
+                    },
+                    incorrect: {
+                        initial: "Let's look at what Dr. Patel is experiencing here.",
+                        guidance: "Is Dr. Patel confused about what the right thing to do is? No—she clearly states she knows what devices are appropriate for patients. Is she choosing between two valid but conflicting ethical principles? Not exactly—the business pressure isn't an ethical principle. What is she facing?",
+                        hint: "Dr. Patel explicitly knows the right thing to do: 'I know what's appropriate for their needs.' The problem is external pressure from her employer to act differently for business reasons. This creates a barrier between her professional knowledge and her ability to act on it freely.",
+                        resolution: "This is ethical distress. Dr. Patel is experiencing the frustration that comes from knowing what's ethically right but facing institutional pressure to compromise that knowledge for business reasons. The gap between knowing and being able to act freely defines ethical distress."
+                    }
+                },
+                reflectionPrompt: "What strategies can healthcare professionals use to navigate situations where business interests conflict with patient-centered care?"
+            },
+
+            // CASE 10 - Medium - Substance Misuse Reporting
+            {
+                id: 10,
+                difficulty: "Medium",
+                profession: "Physiotherapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Priya has been treating a patient with chronic pain for several months. Recently, she's observed some concerning patterns during their sessions." },
+                    { type: "character", name: "Priya", emoji: "👩‍⚕️", side: "left", text: "I think my patient might be misusing their prescribed opioid medications. The signs are there—inconsistent stories, behavioral changes, treatment resistance." },
+                    { type: "character", name: "Priya", emoji: "👩‍⚕️", side: "left", text: "But I'm honestly confused about my responsibilities here. Do I talk to the patient first? Contact the physician directly? Is reporting to an oversight body required? How does patient confidentiality factor in?" },
+                    { type: "character", name: "Priya", emoji: "👩‍⚕️", side: "left", text: "I know something needs to happen, but I'm not sure what the correct procedure is or what my scope of responsibility actually includes." }
+                ],
+                question: "What type of ethical challenge is Priya experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Correct! You've identified ethical uncertainty.",
+                        exploration: "Priya recognizes there's an ethical issue but is unsure about her specific ethical and legal obligations. She's confused about correct procedures, the balance between patient confidentiality and safety, and her scope of responsibility. These are questions about which principles apply and how to proceed ethically. She's not facing institutional barriers (distress) or choosing between known conflicting principles (dilemma)—she needs more information about her professional obligations.",
+                        consideration: "Situations involving potential substance misuse often create uncertainty for healthcare professionals, especially regarding mandatory reporting requirements, confidentiality boundaries, and professional responsibilities. The confusion about procedural and ethical obligations is characteristic of uncertainty."
+                    },
+                    incorrect: {
+                        initial: "Let's work through what Priya is facing.",
+                        guidance: "Is Priya being blocked from acting by external forces? No—there are no institutional barriers preventing her from taking action. Has she identified clear conflicting ethical principles? Not really—she hasn't even determined what her responsibilities are yet.",
+                        hint: "Notice Priya's questions: 'Do I talk to the patient first? Contact the physician? Is reporting required? How does confidentiality factor in?' These reveal fundamental uncertainty about professional obligations and procedures. She needs to understand what the rules and ethical guidelines say before she can act.",
+                        resolution: "This is ethical uncertainty. Priya needs to consult professional guidelines, potentially legal counsel, and her regulatory body to gain clarity about mandatory reporting requirements, confidentiality boundaries, and appropriate procedures for addressing suspected substance misuse. Once she has that clarity, she can act appropriately."
+                    }
+                },
+                reflectionPrompt: "What resources and professional guidelines should be consulted regarding mandatory reporting and patient confidentiality in one's jurisdiction?"
+            },
+
+            // CASE 11 - Medium - Caseload Overload Distress
+            {
+                id: 11,
+                difficulty: "Medium",
+                profession: "Occupational Therapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Kenji works in a school system that serves a diverse population of students with various needs. This year has been particularly challenging." },
+                    { type: "character", name: "Kenji", emoji: "👨‍⚕️", side: "left", text: "I've been assigned 45 students on my caseload. The recommended maximum is 30. These students aren't getting the frequency or quality of intervention they need." },
+                    { type: "narrator", name: "Narrator", text: "Kenji has raised concerns multiple times with his supervisor." },
+                    { type: "character", name: "Supervisor", emoji: "👔", side: "right", text: "Kenji, I understand your concerns, but this is the reality of public school funding. You'll need to do the best you can with what we have." },
+                    { type: "character", name: "Kenji", emoji: "👨‍⚕️", side: "left", text: "I know what these students need. I know what best practice looks like. But the system won't allow me to provide it. I'm failing them, and it's not even my fault." }
+                ],
+                question: "What type of ethical challenge is Kenji experiencing?",
+                correctAnswer: "distress",
+                feedback: {
+                    correct: {
+                        initial: "Exactly! This is ethical distress.",
+                        exploration: "Kenji has clear knowledge of appropriate caseload sizes and intervention frequency (best practice) but is unable to provide adequate services due to systemic constraints (funding limitations and administrative decisions). Despite knowing what should be done, external factors prevent him from acting ethically. The sense of frustration and powerlessness he expresses—'I'm failing them, and it's not even my fault'—is characteristic of ethical distress.",
+                        consideration: "This type of systemic ethical distress is particularly challenging because it's not about one decision but an ongoing situation that affects many clients. The professional knows what's needed but is trapped by institutional constraints beyond their control."
+                    },
+                    incorrect: {
+                        initial: "Let's examine Kenji's situation carefully.",
+                        guidance: "Is Kenji confused about what the right thing to do is? No—he clearly knows what best practice requires. Is he choosing between two conflicting but valid ethical principles? Not really—there's no ethical justification for inadequate caseloads. So what's happening?",
+                        hint: "Kenji explicitly states: 'I know what these students need. I know what best practice looks like.' The problem isn't knowledge or choosing between principles—it's that external constraints (systemic funding issues and administrative decisions) prevent him from providing appropriate care.",
+                        resolution: "This is ethical distress. Kenji is experiencing the frustration that comes from having professional knowledge of what students need but being unable to provide it due to systemic barriers beyond his control. This gap between knowledge and institutional reality defines ethical distress."
+                    }
+                },
+                reflectionPrompt: "What collective advocacy strategies might be effective when systemic issues prevent entire professions from meeting practice standards?"
+            },
+
+            // CASE 12 - Hard - Driving Cessation Dilemma
+            {
+                id: 12,
+                difficulty: "Hard",
+                profession: "Occupational Therapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Dr. Patricia Santos has been working with Mr. James Abbott for several months. He's a 72-year-old man with early-stage Parkinson's disease." },
+                    { type: "character", name: "Mr. Abbott", emoji: "🧓", side: "right", text: "Dr. Santos, I've been driving for 55 years without a single accident. I know my reflexes aren't what they used to be, but I'm still perfectly capable. Don't even think about taking my keys." },
+                    { type: "character", name: "Dr. Santos", emoji: "👩‍⚕️", side: "left", text: "Mr. Abbott, I understand how important driving is to you. Your vision and basic reaction times are within acceptable ranges..." },
+                    { type: "character", name: "Dr. Santos", emoji: "👩‍⚕️", side: "left", text: "However, I'm observing executive function deficits—difficulties with divided attention, slower processing of complex situations. These might not show up on standard tests, but they concern me for complex traffic scenarios." },
+                    { type: "character", name: "Mr. Abbott", emoji: "🧓", side: "right", text: "So what are you saying? That I can't handle a four-way stop? I've been navigating this city for decades!" },
+                    { type: "narrator", name: "Narrator", text: "Patricia must make a recommendation that will significantly impact Mr. Abbott's independence and identity." }
+                ],
+                question: "What type of ethical challenge is Dr. Santos experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Outstanding! You've identified this complex ethical dilemma.",
+                        exploration: "Dr. Santos is navigating a profound conflict between multiple ethical principles: (1) respecting Mr. Abbott's autonomy and his meaningful occupation—driving is tied to his identity and independence, and he meets basic testing criteria, (2) her duty to protect Mr. Abbott from potential harm (beneficence), and (3) her duty to protect public safety (non-maleficence). Both supporting continued driving and recommending cessation have legitimate ethical grounding.",
+                        consideration: "What makes this dilemma particularly challenging is its complexity. It's not just about Mr. Abbott's safety—it involves public safety, quality of life, identity, and the subtle nature of executive function deficits that may not be captured by standard tests. There's no perfect answer that satisfies all ethical principles involved. This is why high-stakes capacity decisions often require interprofessional input.",
+                        nuance: "The context matters enormously here. In a rural area with no public transit where driving is essential for survival, the ethical calculation might differ from an urban area with robust transportation alternatives. The dilemma becomes even more complex when considering that premature driving cessation can lead to isolation, depression, and accelerated decline, while delayed cessation risks serious accidents. This is ethical decision-making at its most difficult."
+                    },
+                    incorrect: {
+                        initial: "This is a nuanced case, so let's explore it together carefully.",
+                        guidance: "Consider: Is Dr. Santos confused about which principles apply? No—she's clearly identified autonomy, beneficence, and public safety. Is she being prevented from making a recommendation by external forces? No—she has the professional authority to make this assessment. So what is she experiencing?",
+                        hint: "Dr. Santos faces a choice between conflicting but valid ethical principles: respecting Mr. Abbott's autonomy and meaningful occupation (he passes basic tests and driving is central to his identity) versus her duty to protect both him and the public from potential harm (her clinical observations of executive function deficits). Both positions have legitimate ethical justification.",
+                        resolution: "This is an ethical dilemma—specifically, one involving competing principles of autonomy, beneficence, and non-maleficence. What makes it a dilemma rather than uncertainty is that Patricia knows exactly which principles are in conflict. What makes it a dilemma rather than distress is that she can act—she must choose, and that choice will necessarily compromise one set of valid ethical principles while upholding another."
+                    }
+                },
+                reflectionPrompt: "What role should interprofessional assessment play in high-stakes decisions about meaningful occupations when capacity is in question?"
+            },
+
+            // CASE 13 - Hard - Prognosis Disclosure Dilemma
+            {
+                id: 13,
+                difficulty: "Hard",
+                profession: "Speech-Language Pathology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Dr. Kumar is working with a patient who has severe aphasia following a stroke. The family has made a specific request." },
+                    { type: "character", name: "Patient's Family", emoji: "👨‍👩‍👧", side: "right", text: "Dr. Kumar, please don't discuss the limited prognosis directly with our father. It would be too devastating. He needs hope right now, not discouragement." },
+                    { type: "narrator", name: "Narrator", text: "However, the patient has been asking direct questions about recovery using his limited communication abilities." },
+                    { type: "character", name: "Patient", emoji: "🧓", side: "right", text: "[Points to calendar, then makes questioning gestures about speech recovery]" },
+                    { type: "character", name: "Dr. Kumar", emoji: "👨‍⚕️", side: "left", text: "He's clearly asking about his prognosis. The family wants me to protect him from difficult information, but he seems to want honest answers. Both perspectives have validity." }
+                ],
+                question: "What type of ethical challenge is Dr. Kumar experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Excellent! You've recognized this complex ethical dilemma.",
+                        exploration: "Dr. Kumar is navigating conflicting ethical principles: respecting both the patient's autonomy (their right to information about their own condition) and the family's concerns rooted in beneficence (protecting the patient from psychological harm). Additionally, there are questions about who has the right to make decisions about information disclosure. Both protecting and informing have ethical merit, and there's no solution that fully honors all stakeholders' values.",
+                        consideration: "This dilemma is complicated by cultural factors—different cultures have different norms about truth-telling, the role of family in medical decisions, and whether hope or honesty should be prioritized. What seems clearly right in one cultural context may be inappropriate in another. Dr. Kumar must navigate not just competing principles but potentially competing cultural values.",
+                        nuance: "The patient's communication limitations add another layer of complexity. Can Dr. Kumar be certain about what the patient is asking? How much detail can be meaningfully conveyed given the aphasia? These practical challenges interact with the ethical principles, making the decision-making process even more complex."
+                    },
+                    incorrect: {
+                        initial: "Let's work through this complex situation together.",
+                        guidance: "Is Dr. Kumar confused about what ethical principles are involved? No—he can identify autonomy and beneficence. Is he being prevented from acting? No—he has the ability to communicate with either the patient or family. What is he experiencing?",
+                        hint: "Dr. Kumar faces a conflict between the patient's apparent desire for honest information (respecting autonomy) and the family's request to withhold difficult information (motivated by beneficence). Both positions have ethical merit—honoring patient rights and protecting from harm are both valid principles. He must choose between them.",
+                        resolution: "This is an ethical dilemma. Dr. Kumar must navigate conflicting but valid ethical principles involving patient autonomy, family concerns, cultural values, and beneficence. Whatever he decides—full disclosure or partial information—will honor some principles while compromising others. This tension between competing valid principles defines an ethical dilemma."
+                    }
+                },
+                reflectionPrompt: "How can situations be navigated where family protective instincts conflict with a patient's right to information, and what role does cultural competency play?"
+            },
+
+            // CASE 14 - Hard - Deaf Culture and Amplification
+            {
+                id: 14,
+                difficulty: "Hard",
+                profession: "Audiology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Dr. Lisa Chen is evaluating a young child for hearing aids. The child's family belongs to the Deaf community and uses American Sign Language as their primary language." },
+                    { type: "character", name: "Parent One", emoji: "👨", side: "right", text: "Dr. Chen, we want Tyler to have hearing aids and focus on spoken language. He needs to function in the hearing world." },
+                    { type: "character", name: "Parent Two", emoji: "👩", side: "right", text: "No! Tyler should embrace Deaf culture and focus on ASL. Hearing aids aren't necessary. Our community is thriving and complete without trying to 'fix' deafness." },
+                    { type: "narrator", name: "Narrator", text: "The parents have fundamentally different views about their child's identity and future. Tyler is three years old, at a critical period for language development." },
+                    { type: "character", name: "Dr. Chen", emoji: "👩‍⚕️", side: "left", text: "Both approaches have potential benefits. Both parents love Tyler and want what's best. But they have completely different views of what 'best' means. How do I guide this family?" }
+                ],
+                question: "What type of ethical challenge is Dr. Chen experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Correct! This is a profound ethical dilemma.",
+                        exploration: "Dr. Chen faces a dilemma involving multiple competing ethical principles: respecting cultural identity and Deaf community values versus providing access to hearing technology; considering both parents' autonomy and differing views; and determining what's in the child's best interest when 'best' is culturally defined. This isn't about one right answer—it's about navigating legitimate but conflicting ethical positions rooted in different cultural values and identities.",
+                        consideration: "What makes this dilemma particularly challenging is that it's not just about medical intervention—it's about identity, culture, community belonging, and fundamentally different worldviews about what constitutes a good life. The medical model (deafness as a condition to treat) conflicts with the cultural model (Deaf as a cultural and linguistic minority). Both have validity in different frameworks.",
+                        nuance: "Adding to the complexity: the parents disagree, so there's no unified family voice. Tyler is too young to express preferences. The window for language acquisition is time-limited, so deferring the decision has consequences. And Dr. Chen must maintain neutrality while also providing evidence-based information, all while respecting Deaf culture and avoiding audism (discrimination against Deaf people)."
+                    },
+                    incorrect: {
+                        initial: "This is a complex case with many layers. Let's examine it together.",
+                        guidance: "Is Dr. Chen confused about what's happening? No—she understands both perspectives clearly. Is she being blocked from acting? No—she can provide information and make recommendations. What is she experiencing?",
+                        hint: "Dr. Chen must navigate conflicting but valid ethical positions: respecting cultural identity and Deaf community values, honoring both parents' different views, and determining what's in Tyler's best interest when there's no universal agreement on what that means. She must make a recommendation knowing that any choice will align with some values while conflicting with others.",
+                        resolution: "This is an ethical dilemma involving cultural identity, parental disagreement, and competing frameworks for understanding deafness. Dr. Chen cannot satisfy all ethical principles simultaneously. Her decision to support one approach necessarily means not fully supporting the other, even though both have ethical merit. This tension between competing valid positions defines an ethical dilemma."
+                    }
+                },
+                reflectionPrompt: "How can audiologists develop cultural humility regarding Deaf culture while providing evidence-based information, and what's the appropriate role when parents disagree fundamentally?"
+            },
+
+            // CASE 15 - Hard - Insurance Fraud vs. Patient Welfare
+            {
+                id: 15,
+                difficulty: "Hard",
+                profession: "Physiotherapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Cameron has been treating a patient with a work-related injury for several months. The situation has become complicated." },
+                    { type: "character", name: "Cameron", emoji: "👨‍⚕️", side: "left", text: "During therapy sessions, I've observed my patient performing physical activities that far exceed what they've reported on their disability claim forms." },
+                    { type: "narrator", name: "Narrator", text: "The insurance company has been requesting progress reports. The patient has confided in Cameron about their situation." },
+                    { type: "character", name: "Patient", emoji: "🧑‍🔧", side: "right", text: "Cameron, those disability benefits are the only thing keeping my family housed right now. If I lose them, we're on the street. You understand, right?" },
+                    { type: "character", name: "Cameron", emoji: "👨‍⚕️", side: "left", text: "If I document what I've actually observed, he'll lose his benefits. But if I don't report accurately, I'm potentially complicit in insurance fraud. Both choices have serious consequences." }
+                ],
+                question: "What type of ethical challenge is Cameron experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Correct! This is a complex ethical dilemma.",
+                        exploration: "Cameron faces multiple conflicting principles: professional integrity and honesty (fidelity to accurate documentation) versus beneficence and concern for the patient's welfare (their housing and family stability); obligations to third-party payers versus the therapeutic relationship; and questions of justice regarding the insurance system. Each position has ethical merit and significant consequences. There's no solution that satisfies all ethical obligations.",
+                        consideration: "This dilemma is particularly painful because the stakes are so high—a family's housing security is at risk, yet professional integrity and legal obligations are also at stake. Cameron must navigate not just ethical principles but also legal ramifications, professional standards, and human compassion.",
+                        nuance: "It's worth noting that the underlying issue—a system where someone must choose between honesty and keeping a family housed—reflects broader societal problems. While Cameron must make a decision in the immediate situation, the ethical dilemma exists because of systemic failures in social safety nets. Acknowledging this doesn't resolve Cameron's immediate dilemma, but it does recognize that individual ethical dilemmas often arise from larger structural issues."
+                    },
+                    incorrect: {
+                        initial: "This is a very challenging case. Let's explore it carefully.",
+                        guidance: "Is Cameron confused about what's happening? No—he clearly sees the situation. Is he being blocked from acting? No—he has the ability to document accurately or not. What is he experiencing?",
+                        hint: "Cameron must choose between professional integrity and accurate documentation (honesty and obligations to third-party payers) versus concern for the patient's welfare and family stability (beneficence and the therapeutic relationship). Both sides have ethical justification, but he cannot honor both simultaneously.",
+                        resolution: "This is an ethical dilemma involving conflicting principles of integrity, beneficence, professional obligations, and human compassion. Cameron cannot satisfy all ethical principles—accurate documentation may harm the patient, while inaccurate documentation violates professional integrity. This impossible choice between competing valid principles defines an ethical dilemma."
+                    }
+                },
+                reflectionPrompt: "What are the boundaries of the therapeutic relationship when third-party interests are involved, and how can integrity be maintained when honesty might cause significant harm?"
+            },
+
+            // CASE 16 - Hard - Research Consent and Capacity
+            {
+                id: 16,
+                difficulty: "Hard",
+                profession: "Occupational Therapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Morgan is working with a client who has dementia and is participating in a research study. The client signed consent forms before their cognitive decline accelerated." },
+                    { type: "character", name: "Morgan", emoji: "👩‍⚕️", side: "left", text: "During our OT sessions, I'm observing signs of distress when the research procedures are mentioned. Mrs. Patterson can't clearly communicate whether she wants to continue or withdraw." },
+                    { type: "character", name: "Research Team Lead", emoji: "👨‍🔬", side: "right", text: "The original consent is still valid, and this data is valuable. We need to continue with the protocol." },
+                    { type: "narrator", name: "Narrator", text: "The family is divided—some want to continue for potential benefit to others, some want to withdraw to protect their mother." },
+                    { type: "character", name: "Morgan", emoji: "👩‍⚕️", side: "left", text: "I don't know what my obligation is here. Does the original consent still apply? Should current distress override past consent? What role should family input play? What is my responsibility as the therapist observing this distress firsthand?" }
+                ],
+                question: "What type of ethical challenge is Morgan experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Well done! This is ethical uncertainty.",
+                        exploration: "Morgan is unclear about which ethical obligations take precedence in this complex situation involving research ethics, capacity, consent, and observed distress. She hasn't yet identified the specific ethical framework that should guide her response—she's uncertain whether original consent, current capacity, observed distress, or family input should be prioritized, and what her role and responsibility actually is in this context. She needs consultation with ethics committees and research oversight bodies to determine the appropriate course of action.",
+                        consideration: "Research ethics involving participants with changing capacity creates profound uncertainty about ongoing consent, the role of advance directives, how to interpret non-verbal signs of distress, and what protections should exist for vulnerable populations. Morgan's uncertainty about these competing considerations and unclear responsibilities is characteristic of ethical uncertainty in complex research contexts."
+                    },
+                    incorrect: {
+                        initial: "This is a complex situation. Let's work through it together.",
+                        guidance: "Is Morgan being blocked from acting? Not exactly—the question is what action is appropriate. Has she identified clear conflicting principles? Not really—she's still figuring out what framework should guide her response to this situation.",
+                        hint: "Notice Morgan's questions: 'Does the original consent still apply? Should current distress override past consent? What role should family input play? What is my responsibility?' These reveal fundamental uncertainty about which ethical and legal frameworks apply to this complex situation involving capacity, research participation, and her role as a treating therapist.",
+                        resolution: "This is ethical uncertainty. Morgan needs to consult with research ethics boards, legal counsel, and her professional regulatory body to understand what obligations take precedence when a research participant's capacity has declined and they show signs of distress. Once she has clarity about the ethical and legal framework, she can determine appropriate action."
+                    }
+                },
+                reflectionPrompt: "What resources and consultation processes should be available when questions arise about client capacity, research participation, and ongoing consent?"
+            },
+
+            // CASE 17 - Hard - Proactive Care vs. Cost Cutting
+            {
+                id: 17,
+                difficulty: "Hard",
+                profession: "Speech-Language Pathology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Amir works in a hospital that recently implemented new cost-cutting measures. An administrative directive has changed how SLP services are delivered." },
+                    { type: "character", name: "Hospital Administrator", emoji: "💼", side: "right", text: "Effective immediately: SLP services will only be provided for patients specifically referred by physicians. Do not proactively identify patients during interdisciplinary rounds. We need to reduce 'unnecessary' consultations." },
+                    { type: "character", name: "Amir", emoji: "👨‍⚕️", side: "left", text: "But early dysphagia screening can prevent aspiration pneumonia. Many at-risk patients aren't getting referred—physicians aren't always aware of swallowing risks, especially in complex cases." },
+                    { type: "character", name: "Amir", emoji: "👨‍⚕️", side: "left", text: "I know what needs to be done. I have the expertise to identify these patients. But I'm being explicitly told not to use my professional judgment. This policy directly contradicts evidence-based practice." }
+                ],
+                question: "What type of ethical challenge is Amir experiencing?",
+                correctAnswer: "distress",
+                feedback: {
+                    correct: {
+                        initial: "Exactly right! This is ethical distress.",
+                        exploration: "Amir has clear knowledge of what constitutes best practice (proactive screening and early identification of dysphagia) but is being prevented from acting on this knowledge by explicit administrative policy. He knows what should be done to prevent patient harm—aspiration pneumonia—but institutional constraints and directives are blocking him from providing evidence-based care. The gap between his professional knowledge and his ability to act on it defines ethical distress.",
+                        consideration: "This type of ethical distress is particularly challenging because the policy explicitly prohibits Amir from using his professional expertise. It's not just about resource limitations—it's about being told not to apply professional judgment even when he has the time and capability to do so. The conflict between evidence-based practice and cost-cutting measures creates profound ethical distress."
+                    },
+                    incorrect: {
+                        initial: "Let's examine Amir's situation carefully.",
+                        guidance: "Is Amir confused about what the right thing to do is? No—he clearly knows that proactive dysphagia screening prevents aspiration pneumonia. Is he choosing between two conflicting but valid ethical principles? Not really—there's no ethical justification for preventing early identification of at-risk patients. What is he facing?",
+                        hint: "Amir explicitly states: 'I know what needs to be done. I have the expertise.' He has clear professional knowledge of best practice. The problem is that an explicit administrative policy prevents him from acting on that knowledge, even though he has the capability to do so. He's being blocked from providing evidence-based care.",
+                        resolution: "This is ethical distress. Amir knows what should be done—proactive screening and early identification—but is prevented from doing it by institutional policy that prioritizes cost reduction over patient safety. This gap between professional knowledge and institutional constraints, creating frustration and powerlessness, defines ethical distress."
+                    }
+                },
+                reflectionPrompt: "When institutional policies directly conflict with evidence-based practice and patient safety, what are the obligations to document concerns and advocate for change?"
+            },
+
+            // CASE 18 - Hard - Resource Allocation Dilemma
+            {
+                id: 18,
+                difficulty: "Hard",
+                profession: "Audiology",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Dr. Williams works at a community health center with severely limited resources. She faces an impossible decision this quarter." },
+                    { type: "character", name: "Dr. Williams", emoji: "👩‍⚕️", side: "left", text: "I have funding for exactly one set of hearing aids, but two patients who both urgently need them." },
+                    { type: "character", name: "Dr. Williams", emoji: "👩‍⚕️", side: "left", text: "Mrs. Rodriguez is 78, living alone. Her hearing loss is severe enough that she's stopped answering the phone or door. Her daughter says she's increasingly isolated and depressed. This is becoming a safety issue." },
+                    { type: "character", name: "Dr. Williams", emoji: "👩‍⚕️", side: "left", text: "Then there's Tyler, age 3, with bilateral hearing loss. He's at a critical period for language development. His parents are working with early intervention, but amplification now could significantly impact his outcomes." },
+                    { type: "narrator", name: "Narrator", text: "Dr. Williams must choose which patient receives services this quarter." }
+                ],
+                question: "What type of ethical challenge is Dr. Williams experiencing?",
+                correctAnswer: "dilemma",
+                feedback: {
+                    correct: {
+                        initial: "Correct! This is an ethical dilemma involving resource allocation.",
+                        exploration: "Dr. Williams faces a tragic choice between two ethically defensible positions: (1) prioritizing Tyler based on critical developmental periods and potential long-term impact on language development, or (2) prioritizing Mrs. Rodriguez based on immediate safety needs and preventing imminent harm (isolation, depression, emergency response). Both choices have valid ethical justifications rooted in different aspects of beneficence and justice. She cannot help both, making this a true dilemma with no perfect solution.",
+                        consideration: "What makes this a dilemma rather than distress is subtle but important: While systemic resource limitations created this situation (and that's critically important to acknowledge), Dr. Williams's immediate ethical challenge is in making the choice between two patients, not in being prevented from providing care altogether. She must actively decide which ethical framework for resource allocation to prioritize—immediate safety versus developmental potential. If she simply couldn't provide hearing aids to anyone, that would be distress.",
+                        nuance: "Resource allocation dilemmas like this are particularly painful because both principles (immediate safety needs vs. critical developmental windows) have merit. Healthcare professionals facing these situations need institutional support, ethical frameworks for triage decisions, and recognition that there may be no 'right' answer—only the best decision possible in an unjust situation created by inadequate resources."
+                    },
+                    incorrect: {
+                        initial: "This is a particularly complex case. Let's work through it carefully.",
+                        guidance: "You might think this is distress because resource limitations are involved, and that's understandable. But consider: Is Dr. Williams being prevented from providing any care? Or must she make a choice about who receives limited care? That distinction is important.",
+                        hint: "Dr. Williams has resources for one patient and must choose between two competing but valid ethical principles: protecting someone at immediate risk (Mrs. Rodriguez's safety and mental health) versus intervening during a critical developmental window (Tyler's language acquisition). Both positions have ethical merit. Her challenge is making the choice, not being blocked entirely.",
+                        resolution: "This is an ethical dilemma—specifically a resource allocation dilemma. While systemic failures created the situation, Dr. Williams's immediate challenge is choosing between two patients when both choices are ethically defensible but mutually exclusive. She must decide which principle to prioritize, knowing that one person who needs care won't receive it. This active choice between competing valid principles defines a dilemma."
+                    }
+                },
+                reflectionPrompt: "What ethical frameworks can guide healthcare resource allocation decisions, and how can professionals cope emotionally when not everyone who needs care can be helped?"
+            },
+
+            // CASE 19 - Medium - Social Media Boundary Uncertainty
+            {
+                id: 19,
+                difficulty: "Medium",
+                profession: "Physiotherapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Danielle is a physiotherapist who recently graduated and started practicing in a small community. She's navigating new challenges around professional boundaries." },
+                    { type: "character", name: "Danielle", emoji: "👩‍⚕️", side: "left", text: "One of my patients sent me a friend request on social media. In a small town like this, I see patients at the grocery store, at community events... it's not unusual." },
+                    { type: "character", name: "Danielle", emoji: "👩‍⚕️", side: "left", text: "But is connecting on social media different? Where's the line between being part of the community and maintaining professional boundaries? If I decline, will it damage our therapeutic relationship or seem unfriendly?" },
+                    { type: "character", name: "Danielle", emoji: "👩‍⚕️", side: "left", text: "I'm genuinely not sure what the right approach is. Do professional guidelines address this? Does it matter which platform? What if they're a friend of a friend?" }
+                ],
+                question: "What type of ethical challenge is Danielle experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Correct! This is ethical uncertainty.",
+                        exploration: "Danielle is genuinely unsure about where professional boundaries lie in the context of social media and small-town practice. She hasn't identified a clear conflict between principles (dilemma) and isn't being blocked from acting (distress). Instead, she needs more information—from professional guidelines, regulatory bodies, or mentors—to understand what constitutes appropriate professional boundaries in the digital age and in small community contexts.",
+                        consideration: "Social media has created new ethical terrain that many professionals find confusing. Traditional boundary guidelines may not clearly address these platforms, and small-town practice adds additional complexity. Danielle's uncertainty about where to draw lines is common and appropriate—it should prompt her to seek guidance rather than make assumptions."
+                    },
+                    incorrect: {
+                        initial: "Let's think through Danielle's situation together.",
+                        guidance: "Is Danielle being blocked from acting? No—she can accept or decline the friend request. Has she identified clear conflicting principles? Not really—she's still figuring out what the professional standards are regarding social media connections with patients.",
+                        hint: "Danielle's questions reveal her uncertainty: 'Where's the line? Do professional guidelines address this? Does it matter which platform?' She needs clarity about professional boundary standards in the digital age before she can make an informed decision. This is about understanding what the ethical framework says, not choosing between known principles.",
+                        resolution: "This is ethical uncertainty. Danielle needs to consult professional guidelines, regulatory body standards, and possibly more experienced colleagues to gain clarity about social media boundaries with patients. Once she understands what professional standards recommend, she can make appropriate decisions about these situations."
+                    }
+                },
+                reflectionPrompt: "How should healthcare professionals navigate social media boundaries with patients, especially in small communities where social overlap is inevitable?"
+            },
+
+            // CASE 20 - Medium - Conflict of Interest with Family
+            {
+                id: 20,
+                difficulty: "Medium",
+                profession: "Occupational Therapy",
+                messages: [
+                    { type: "narrator", name: "Narrator", text: "Sam has been working as an occupational therapist in a school district for two years. This semester, a new student was assigned to their caseload." },
+                    { type: "character", name: "Sam", emoji: "👨‍⚕️", side: "left", text: "The new student is my cousin's daughter. We see each other at family gatherings regularly. Is this a conflict of interest? Should I recuse myself?" },
+                    { type: "character", name: "Sam", emoji: "👨‍⚕️", side: "left", text: "On one hand, I know her developmental history and family context, which could be helpful. On the other hand, will my cousin expect special treatment? Will I be objective? Can I maintain professional boundaries at family dinners?" },
+                    { type: "character", name: "Sam", emoji: "👨‍⚕️", side: "left", text: "In a small district with limited OT coverage, transferring her case might mean less frequent services. But I'm genuinely not sure what the right thing to do is here. What are the rules about treating family members?" }
+                ],
+                question: "What type of ethical challenge is Sam experiencing?",
+                correctAnswer: "uncertainty",
+                feedback: {
+                    correct: {
+                        initial: "Well done! This is ethical uncertainty.",
+                        exploration: "Sam is unsure about what professional standards say regarding dual relationships and potential conflicts of interest when treating family members. He hasn't clearly identified conflicting principles (dilemma) and isn't being prevented from acting (distress). Instead, he needs more information—from his employer's policies, professional guidelines, and possibly his supervisor—to understand whether this situation constitutes a conflict of interest and what the appropriate response should be.",
+                        consideration: "Dual relationships in small communities or organizations create genuine uncertainty about boundaries and conflicts of interest. Sam's questions about objectivity, special treatment expectations, and professional standards reveal appropriate uncertainty that should prompt consultation before proceeding."
+                    },
+                    incorrect: {
+                        initial: "Let's work through Sam's situation together.",
+                        guidance: "Is Sam being blocked from acting? No—he could continue treating the student or request a transfer. Has he identified clear conflicting ethical principles? Not exactly—he's still figuring out whether this even constitutes a conflict of interest that requires action.",
+                        hint: "Sam's questions reveal fundamental uncertainty: 'Is this a conflict of interest? Should I recuse myself? What are the rules about treating family members?' He needs to understand what institutional policies and professional standards say about dual relationships before he can determine the appropriate course of action.",
+                        resolution: "This is ethical uncertainty. Sam needs to consult with his supervisor, review institutional policies, and reference professional guidelines about dual relationships and conflicts of interest. Once he has clarity about whether this situation is problematic and what options are available, he can make an informed decision."
+                    }
+                },
+                reflectionPrompt: "How should healthcare professionals navigate potential conflicts of interest when personal relationships overlap with professional responsibilities?"
+            }
+        ];
+
+        // State management
+        let currentCaseIndex = 0;
+        let userResponses = [];
+        let selectedAnswer = null;
+        let messageIndex = 0;
+        let currentMessages = [];
+        
+        function startLearning() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('chat-screen').classList.remove('hidden');
+            loadCase();
+        }
+
+        function updateProgress() {
+            const progress = (currentCaseIndex / narrativeCases.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-info').textContent = `Case ${currentCaseIndex + 1} of ${narrativeCases.length}`;
+        }
+
+        function loadCase() {
+            updateProgress();
+            const currentCase = narrativeCases[currentCaseIndex];
+            currentMessages = currentCase.messages;
+            messageIndex = 0;
+            selectedAnswer = null;
+            
+            const chatScreen = document.getElementById('chat-screen');
+            chatScreen.innerHTML = '';
+            
+            showNextMessage();
+        }
+
+        function showNextMessage() {
+            const currentCase = narrativeCases[currentCaseIndex];
+            
+            if (messageIndex < currentMessages.length) {
+                const message = currentMessages[messageIndex];
+                const chatScreen = document.getElementById('chat-screen');
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${message.type === 'narrator' ? 'narrator' : 'character-' + message.side}`;
+                messageDiv.style.animationDelay = '0s';
+                
+                if (message.type === 'narrator') {
+                    messageDiv.innerHTML = `
+                        <div class="bubble">
+                            <div class="character-name">${message.name}</div>
+                            <div class="bubble-text">${message.text}</div>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="character-avatar">${message.emoji}</div>
+                        <div class="bubble">
+                            <div class="character-name">${message.name}</div>
+                            <div class="bubble-text">${message.text}</div>
+                        </div>
+                    `;
+                }
+                
+                chatScreen.appendChild(messageDiv);
+                
+                // Scroll to bottom smoothly
+                setTimeout(() => {
+                    chatScreen.parentElement.scrollTop = chatScreen.parentElement.scrollHeight;
+                }, 100);
+                
+                messageIndex++;
+                
+                // Auto-advance to next message
+                setTimeout(() => {
+                    showNextMessage();
+                }, 1800);
+                
+            } else {
+                // All messages shown, display question
+                setTimeout(() => {
+                    showQuestion();
+                }, 500);
+            }
+        }
+
+        function showQuestion() {
+            const currentCase = narrativeCases[currentCaseIndex];
+            const chatScreen = document.getElementById('chat-screen');
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                <div class="question-prompt">
+                    💭 ${currentCase.question}
+                </div>
+            `;
+            chatScreen.appendChild(questionDiv);
+            
+            // Scroll to question
+            setTimeout(() => {
+                chatScreen.parentElement.scrollTop = chatScreen.parentElement.scrollHeight;
+            }, 100);
+            
+            // Show answer options after a brief delay
+            setTimeout(() => {
+                showAnswerOptions();
+            }, 800);
+        }
+
+        function showAnswerOptions() {
+            const chatScreen = document.getElementById('chat-screen');
+            
+            const options = [
+                { value: 'dilemma', label: 'Ethical Dilemma' },
+                { value: 'uncertainty', label: 'Ethical Uncertainty' },
+                { value: 'distress', label: 'Ethical Distress' }
+            ];
+            
+            // Shuffle options
+            const shuffled = options.sort(() => Math.random() - 0.5);
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'answer-options';
+            optionsDiv.innerHTML = shuffled.map(opt => `
+                <div class="answer-option" onclick="selectAnswer('${opt.value}')" data-value="${opt.value}">
+                    <div class="answer-label">${opt.label}</div>
+                </div>
+            `).join('');
+            
+            chatScreen.appendChild(optionsDiv);
+            
+            setTimeout(() => {
+                chatScreen.parentElement.scrollTop = chatScreen.parentElement.scrollHeight;
+            }, 100);
+        }
+
+        function selectAnswer(answer) {
+            selectedAnswer = answer;
+            
+            // Update UI
+            const options = document.querySelectorAll('.answer-option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.getAttribute('data-value') === answer) {
+                    opt.classList.add('selected');
+                }
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Show feedback after brief delay
+            setTimeout(() => {
+                showFeedback();
+            }, 800);
+        }
+
+        function showFeedback() {
+            const currentCase = narrativeCases[currentCaseIndex];
+            const isCorrect = selectedAnswer === currentCase.correctAnswer;
+            const feedback = isCorrect ? currentCase.feedback.correct : currentCase.feedback.incorrect;
+            const chatScreen = document.getElementById('chat-screen');
+            
+            // Store response
+            userResponses.push({
+                caseId: currentCase.id,
+                selectedAnswer: selectedAnswer,
+                correctAnswer: currentCase.correctAnswer,
+                isCorrect: isCorrect
+            });
+            
+            // Create feedback section
+            const feedbackSection = document.createElement('div');
+            feedbackSection.className = 'feedback-section';
+            
+            // Initial feedback
+            const initialFeedback = document.createElement('div');
+            initialFeedback.className = `feedback-bubble ${isCorrect ? '' : 'incorrect'}`;
+            initialFeedback.innerHTML = `
+                <div class="feedback-title">${isCorrect ? '✅ Excellent!' : '🤔 Let\'s Think About This'}</div>
+                <div class="feedback-text">${feedback.initial}</div>
+            `;
+            feedbackSection.appendChild(initialFeedback);
+            
+            chatScreen.appendChild(feedbackSection);
+            scrollToBottom();
+            
+            // Show detailed feedback in stages
+            setTimeout(() => {
+                if (isCorrect) {
+                    showCorrectFeedbackStages(feedback, feedbackSection);
+                } else {
+                    showIncorrectFeedbackStages(feedback, feedbackSection);
+                }
+            }, 1500);
+        }
+
+        function showCorrectFeedbackStages(feedback, container) {
+            // Exploration
+            setTimeout(() => {
+                const explorationBubble = document.createElement('div');
+                explorationBubble.className = 'feedback-bubble';
+                explorationBubble.innerHTML = `
+                    <div class="feedback-title">📖 Why This Is Correct</div>
+                    <div class="feedback-text">${feedback.exploration}</div>
+                `;
+                container.appendChild(explorationBubble);
+                scrollToBottom();
+            }, 500);
+            
+            // Consideration
+            setTimeout(() => {
+                const considerationBubble = document.createElement('div');
+                considerationBubble.className = 'feedback-bubble';
+                considerationBubble.innerHTML = `
+                    <div class="feedback-title">💡 Something to Consider</div>
+                    <div class="feedback-text">${feedback.consideration}</div>
+                `;
+                container.appendChild(considerationBubble);
+                scrollToBottom();
+            }, 2500);
+            
+            // Nuance if exists
+            if (feedback.nuance) {
+                setTimeout(() => {
+                    const nuanceBubble = document.createElement('div');
+                    nuanceBubble.className = 'feedback-bubble';
+                    nuanceBubble.innerHTML = `
+                        <div class="feedback-title">🎯 Important Nuance</div>
+                        <div class="feedback-text">${feedback.nuance}</div>
+                    `;
+                    container.appendChild(nuanceBubble);
+                    scrollToBottom();
+                }, 4500);
+            }
+            
+            // Reflection and continue
+            setTimeout(() => {
+                showReflectionAndContinue();
+            }, feedback.nuance ? 6000 : 4000);
+        }
+
+        function showIncorrectFeedbackStages(feedback, container) {
+            // Guidance
+            setTimeout(() => {
+                const guidanceBubble = document.createElement('div');
+                guidanceBubble.className = 'feedback-bubble incorrect';
+                guidanceBubble.innerHTML = `
+                    <div class="feedback-title">🔍 Let's Examine This</div>
+                    <div class="feedback-text">${feedback.guidance}</div>
+                `;
+                container.appendChild(guidanceBubble);
+                scrollToBottom();
+            }, 500);
+            
+            // Hint
+            setTimeout(() => {
+                const hintBubble = document.createElement('div');
+                hintBubble.className = 'feedback-bubble incorrect';
+                hintBubble.innerHTML = `
+                    <div class="feedback-title">💭 Key Insight</div>
+                    <div class="feedback-text">${feedback.hint}</div>
+                `;
+                container.appendChild(hintBubble);
+                scrollToBottom();
+            }, 2500);
+            
+            // Resolution
+            setTimeout(() => {
+                const resolutionBubble = document.createElement('div');
+                resolutionBubble.className = 'feedback-bubble';
+                resolutionBubble.innerHTML = `
+                    <div class="feedback-title">✨ The Answer</div>
+                    <div class="feedback-text">${feedback.resolution}</div>
+                `;
+                container.appendChild(resolutionBubble);
+                scrollToBottom();
+            }, 4500);
+            
+            // Add nuance if it exists
+            if (feedback.nuance) {
+                setTimeout(() => {
+                    const nuanceBubble = document.createElement('div');
+                    nuanceBubble.className = 'feedback-bubble';
+                    nuanceBubble.innerHTML = `
+                        <div class="feedback-title">🎯 Important Nuance</div>
+                        <div class="feedback-text">${feedback.nuance}</div>
+                    `;
+                    container.appendChild(nuanceBubble);
+                    scrollToBottom();
+                }, 6500);
+            }
+            
+            // Reflection and continue
+            setTimeout(() => {
+                showReflectionAndContinue();
+            }, feedback.nuance ? 8000 : 6000);
+        }
+
+        function showReflectionAndContinue() {
+            const currentCase = narrativeCases[currentCaseIndex];
+            const chatScreen = document.getElementById('chat-screen');
+            
+            const reflectionDiv = document.createElement('div');
+            reflectionDiv.className = 'reflection-section';
+            reflectionDiv.innerHTML = `
+                <label>💭 Reflection Question (Optional)</label>
+                <p style="color: #666; margin: 10px 0; font-size: 0.95em;">${currentCase.reflectionPrompt}</p>
+                <textarea id="reflection-text" placeholder="Share your thoughts (optional)..."></textarea>
+            `;
+            chatScreen.appendChild(reflectionDiv);
+            
+            const buttonDiv = document.createElement('div');
+            buttonDiv.className = 'button-group';
+            buttonDiv.innerHTML = `
+                <button class="button" onclick="nextCase()">
+                    ${currentCaseIndex < narrativeCases.length - 1 ? 'Continue to Next Case →' : 'View Results →'}
+                </button>
+            `;
+            chatScreen.appendChild(buttonDiv);
+            
+            scrollToBottom();
+        }
+
+        function nextCase() {
+            currentCaseIndex++;
+            
+            if (currentCaseIndex < narrativeCases.length) {
+                loadCase();
+            } else {
+                showResults();
+            }
+        }
+
+        function scrollToBottom() {
+            const content = document.getElementById('content');
+            setTimeout(() => {
+                content.scrollTop = content.scrollHeight;
+            }, 100);
+        }
+
+        function showResults() {
+            document.getElementById('chat-screen').classList.add('hidden');
+            const resultsScreen = document.getElementById('results-screen');
+            resultsScreen.classList.remove('hidden');
+            
+            const correctCount = userResponses.filter(r => r.isCorrect).length;
+            const percentage = Math.round((correctCount / narrativeCases.length) * 100);
+            
+            // Calculate category breakdown
+            const categoryBreakdown = {
+                uncertainty: { correct: 0, total: 0 },
+                dilemma: { correct: 0, total: 0 },
+                distress: { correct: 0, total: 0 }
+            };
+
+            userResponses.forEach(r => {
+                categoryBreakdown[r.correctAnswer].total++;
+                if (r.isCorrect) categoryBreakdown[r.correctAnswer].correct++;
+            });
+            
+            // Generate personalized message
+            let message = '';
+            if (percentage === 100) {
+                message = "🌟 <strong>Outstanding!</strong> You've demonstrated exceptional understanding of ethical challenges in healthcare. Your ability to distinguish between uncertainty, dilemmas, and distress shows sophisticated ethical reasoning that will serve you well in interprofessional practice.";
+            } else if (percentage >= 80) {
+                message = "💪 <strong>Excellent work!</strong> You have a strong grasp of ethical concepts. ";
+                const uncertaintyMistakes = userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'uncertainty').length;
+                const dilemmaMistakes = userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'dilemma').length;
+                const distressMistakes = userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'distress').length;
+                
+                if (uncertaintyMistakes > dilemmaMistakes && uncertaintyMistakes > distressMistakes) {
+                    message += "Consider reviewing scenarios involving <strong>ethical uncertainty</strong>—remember, this occurs when you're unsure which principle applies, not when you're choosing between known principles.";
+                } else if (dilemmaMistakes > distressMistakes) {
+                    message += "Focus on <strong>ethical dilemmas</strong> in your continued learning—these involve choosing between two valid principles, not just feeling conflicted.";
+                } else {
+                    message += "Pay special attention to <strong>ethical distress</strong> situations—these occur when you know what's right but can't act due to external constraints.";
+                }
+            } else {
+                message = "🎯 <strong>You're developing your ethical reasoning!</strong> This is challenging material, and every healthcare professional continues learning throughout their career. ";
+                const maxMistakes = Math.max(
+                    userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'uncertainty').length,
+                    userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'dilemma').length,
+                    userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'distress').length
+                );
+                
+                if (maxMistakes === userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'uncertainty').length) {
+                    message += "<strong>Ethical uncertainty</strong> can be tricky to identify. Remember: it's about not knowing which principle applies, while dilemmas involve choosing between known principles.";
+                } else if (maxMistakes === userResponses.filter(r => !r.isCorrect && r.correctAnswer === 'dilemma').length) {
+                    message += "<strong>Ethical dilemmas</strong> specifically involve conflicts between two or more valid ethical principles—not just any difficult decision.";
+                } else {
+                    message += "<strong>Ethical distress</strong> has a specific definition: knowing the right thing to do but being unable to act due to external constraints. This differs from uncertainty (not knowing) and dilemmas (choosing between options).";
+                }
+            }
+            
+            resultsScreen.innerHTML = `
+                <h2 style="text-align: center; color: #333; margin-bottom: 20px;">🎓 Journey Complete!</h2>
+                
+                <div class="results-summary">
+                    <div class="results-score">${percentage}%</div>
+                    <div style="color: #666; font-size: 1.1em;">
+                        ${correctCount} out of ${narrativeCases.length} correct
+                    </div>
+                </div>
+
+                <div class="feedback-bubble">
+                    <div class="feedback-text" style="font-size: 1.05em; text-align: center;">
+                        ${message}
+                    </div>
+                </div>
+
+                <h3 style="margin: 30px 0 20px 0; text-align: center; color: #333;">Performance by Category</h3>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${categoryBreakdown.uncertainty.correct}/${categoryBreakdown.uncertainty.total}</div>
+                        <div class="stat-label">Ethical Uncertainty</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${categoryBreakdown.dilemma.correct}/${categoryBreakdown.dilemma.total}</div>
+                        <div class="stat-label">Ethical Dilemma</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${categoryBreakdown.distress.correct}/${categoryBreakdown.distress.total}</div>
+                        <div class="stat-label">Ethical Distress</div>
+                    </div>
+                </div>
+
+                <div class="button-group" style="margin-top: 30px;">
+                    <button class="button" onclick="downloadResults()">📥 Download Results</button>
+                    <a href="https://uwo.eu.qualtrics.com/jfe/form/SV_cM7zaVus1dE3NnU">
+                        <button class="button button-secondary">✍️ Start Survey</button>
+                    </a>
+                </div>
+            `;
+            
+            scrollToBottom();
+        }
+
+        function downloadResults() {
+            const correctCount = userResponses.filter(r => r.isCorrect).length;
+            const percentage = Math.round((correctCount / narrativeCases.length) * 100);
+            
+            let report = `INTERPROFESSIONAL ETHICAL PRACTICE - LEARNING REPORT
+Generated: ${new Date().toLocaleString()}
+
+OVERALL PERFORMANCE
+Score: ${correctCount}/${narrativeCases.length} (${percentage}%)
+
+DETAILED RESPONSES
+${'='.repeat(80)}
+
+`;
+
+            userResponses.forEach((response, index) => {
+                const caseData = narrativeCases[index];
+                report += `CASE ${index + 1} - ${caseData.profession} (${caseData.difficulty})
+Your Answer: ${response.selectedAnswer.toUpperCase()}
+Correct Answer: ${response.correctAnswer.toUpperCase()}
+Result: ${response.isCorrect ? 'CORRECT ✓' : 'INCORRECT ✗'}
+
+${'-'.repeat(80)}
+
+`;
+            });
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Ethical_Practice_Results_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
